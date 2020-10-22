@@ -2,7 +2,7 @@ package Java.test;
 
 import java.util.List;
 
-public interface DAO<T> {
+public interface DAO<T extends DAOObject> {
     <T> T get(int ID);
     List<T> getAll();
     void save(T t);

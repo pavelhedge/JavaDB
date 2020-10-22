@@ -7,19 +7,16 @@ public class Main {
     private static final String user = "root";
     private static final String password = "";
 
-    private static Connection con;
-    private static Statement stmt;
-    private static ResultSet rs;
+    public static Connection con;
+    static Statement stmt;
+    static ResultSet rs;
 
     public static void main(String args[]){
-        String query = "select name, surname from students where course IN (select id from courses where name = 'IT')";
-        try {Class.forName("com.mysql.jdbc.Driver");}
-        catch (ClassNotFoundException e) {
-            System.out.println("MySQL driver not found");
-        }
+        String query = "select name, surname,  from students where courseID IN (select id from courses where name = 'IT')";
 
         try{
             con = DriverManager.getConnection(url, user, password);
+
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
 

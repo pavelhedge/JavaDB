@@ -1,11 +1,13 @@
 package Java.test;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
 class StudentDAO implements DAO<Student>{
     public Student get(int ID){
-        Student student = new Student();
+        PreparedStatement getStudent = con.prepareStatement
+        Student student = new Student(1,"Jean", "Jackson", 1);
         return student;
     }
     public List<Student> getAll(){
