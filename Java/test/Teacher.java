@@ -1,5 +1,8 @@
 package Java.test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,34 @@ class TeacherDAO implements DAO<Teacher>{
         } catch(SQLException e){e.printStackTrace();}
     }
 
+    public Teacher form() {
+        BufferedReader reader = Main.getReader();
+        while (true) {
+            try {
+                System.out.println("Enter name");
+                String name = reader.readLine();
+                if (name.equals("")) throw new NumberFormatException();
+                System.out.println("Enter surname");
+                String surname = reader.readLine();
+                if (surname.equals("")) throw new NumberFormatException();
+                reader.close();
+                return new Teacher(name, surname);
+            } catch (IOException e) {
+            } catch (NumberFormatException e) {
+                System.out.println("Wrong input. Try again?");
+                try {
+                    String input = reader.readLine();
+                    if (input.length() == 0 || input.charAt(0) != 'y') {
+                        reader.close();
+                        return null;
+                    }
+                } catch (IOException i) {
+                }
+            }
+
+        }
+    }
+
     public Teacher get(int ID) throws SQLException{
 
         getStmt.setInt(1, ID);
@@ -78,7 +109,7 @@ class TeacherDAO implements DAO<Teacher>{
 
     public List<Teacher> getAll() throws SQLException{
         resultSet = getAllStmt.executeQuery();
-        List<Teacher> list = new ArrayList();
+        List<Teacher> list = new ArrayList<>();
         while(resultSet.next()){
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
