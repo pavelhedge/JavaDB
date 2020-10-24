@@ -1,5 +1,6 @@
 package Java.test;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import static Java.test.DbObject.getConnection;
 
 public interface DAO<T extends DbObject> {
 
+    T form() throws IOException;
     T get(int ID) throws SQLException;
     T getByName(String name)throws SQLException;
     List<T> getAll() throws SQLException;
@@ -20,9 +22,9 @@ class DbObject{
 
     static Connection connection;
 
-    private static final String url = "jdbc:mysql://127.0.0.1:3306/test";
+    private static final String url = "jdbc:mysql://127.0.0.1:5778/test";
     private static final String user = "root";
-    private static final String password = "";
+    private static final String password = "12345";
 
     static Connection getConnection(){
         if (connection == null){

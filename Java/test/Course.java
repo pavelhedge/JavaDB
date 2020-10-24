@@ -1,5 +1,8 @@
 package Java.test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ class CourseDAO implements DAO<Course>{
         Connection connection = getConnection();
         String getQuery = "SELECT * FROM courses WHERE ID = ?";
         String getByNameQuery = "SELECT * FROM courses WHERE name = ?";
-        String getByYearQuery = "SELECT * FROM courses WHERE year = ";
+        String getByYearQuery = "SELECT * FROM courses WHERE year = ?";
         String getByTeacherQuery = "SELECT * FROM courses WHERE teacherID = ?";
         String getAllQuery = "SELECT * FROM courses";
         String createQuery = "INSERT INTO courses (name, surname, teacherID) VALUES (?,?,?)";
@@ -55,6 +58,33 @@ class CourseDAO implements DAO<Course>{
             updateStmt.close();
             deleteStmt.close();
         } catch(SQLException e){e.printStackTrace();}
+    }
+
+    public Course form() {
+
+        while (true) {
+            BufferedReader reader = Main.getReader();
+            try {
+                System.out.println("Enter name");
+                String name =reader.readLine();
+                if (name.equals("")) throw new NumberFormatException();
+                System.out.println("Enter teacher ID");
+                int teacherID = Integer.parseInt(reader.readLine());
+               reader.close();
+                return new Course(name, teacherID);
+            } catch (NumberFormatException e) {
+                System.out.println("Wrong input. Try again?");
+                try {
+                    String input =reader.readLine();
+                    if (input.length() == 0 || input.charAt(0) != 'y') {
+                       reader.close();
+                        return null;
+                    }
+                } catch (IOException i) {
+                }
+            } catch (IOException e) {
+            }
+        }
     }
 
     public Course get(int ID) throws SQLException{
