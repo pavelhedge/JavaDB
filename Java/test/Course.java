@@ -28,8 +28,8 @@ class CourseDAO implements DAO<Course>{
         String getByYearQuery = "SELECT * FROM courses WHERE year = ?";
         String getByTeacherQuery = "SELECT * FROM courses WHERE teacherID = ?";
         String getAllQuery = "SELECT * FROM courses";
-        String createQuery = "INSERT INTO courses (name, surname, teacherID) VALUES (?,?,?)";
-        String updateQuery = "UPDATE courses SET name = ?, surname = ?, teacherID = ? where ID = ?";
+        String createQuery = "INSERT INTO courses (name, teacherID, year) VALUES (?,?,?)";
+        String updateQuery = "UPDATE courses SET name = ?, teacherID = ?, year = ? where ID = ?";
         String deleteQuery = "DELETE FROM courses WHERE ID = ?";
 
         try {
@@ -70,8 +70,10 @@ class CourseDAO implements DAO<Course>{
                 if (name.equals("")) throw new NumberFormatException();
                 System.out.println("Enter teacher ID");
                 int teacherID = Integer.parseInt(reader.readLine());
+                System.out.println("Enter year");
+                int year = Integer.parseInt(reader.readLine());
                reader.close();
-                return new Course(name, teacherID);
+                return new Course(name, teacherID, year);
             } catch (NumberFormatException e) {
                 System.out.println("Wrong input. Try again?");
                 try {
@@ -95,8 +97,9 @@ class CourseDAO implements DAO<Course>{
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             int teacherID = resultSet.getInt("teacherID");
+            int year = resultSet.getInt("year");
 
-            return new Course(id, name, teacherID);
+            return new Course(id, name, teacherID, year);
         }
         else return null;
     }
@@ -108,8 +111,9 @@ class CourseDAO implements DAO<Course>{
         if (resultSet.next()) {
             int id = resultSet.getInt("id");
             int teacherID = resultSet.getInt("teacherID");
+            int year = resultSet.getInt("year");
 
-            return new Course(id, name, teacherID);
+            return new Course(id, name, teacherID, year);
         }
         else return null;
     }
@@ -122,9 +126,8 @@ class CourseDAO implements DAO<Course>{
         while (resultSet.next()){
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
-            String surname = resultSet.getString("Surname");
             int teacherID = resultSet.getInt("TeacherID");
-            list.add(new Course(id,name,teacherID));
+            list.add(new Course(id,name,teacherID,year));
         }
         return list;
     }
@@ -136,8 +139,8 @@ class CourseDAO implements DAO<Course>{
         while (resultSet.next()){
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
-            String surname = resultSet.getString("Surname");
-            list.add(new Course(id,name,teacherID));
+            int year = resultSet.getInt("year");
+            list.add(new Course(id,name,teacherID, year));
         }
         return list;
     }
@@ -150,19 +153,23 @@ class CourseDAO implements DAO<Course>{
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             int teacherID = resultSet.getInt("teacherID");
-            list.add(new Course(id, name, teacherID));
+            int year = resultSet.getInt("year");
+            list.add(new Course(id, name, teacherID, year));
         }
         return list;
     }
     public void create(Course course) throws SQLException{
         createStmt.setString(1,course.name);
         createStmt.setInt(2, course.teacherID);
+        createStmt.setInt(3, course.year);
         createStmt.executeUpdate();
     }
     public void update(int id, Course course) throws SQLException{
-        updateStmt.setInt(3, id);
+        updateStmt.setInt(4, id);
         updateStmt.setString(1,course.name);
         updateStmt.setInt(2, course.teacherID);
+        createStmt.setInt(3, course.year);
+
         updateStmt.executeUpdate();
     }
     public void delete(int id) throws SQLException{
@@ -175,18 +182,22 @@ class CourseDAO implements DAO<Course>{
 
 public class Course extends DbObject {
     int teacherID;
+    int year;
 
-    public Course(int id, String name, int teacherID) {
+    public Course(int id, String name, int teacherID, int year) {
         super(id, name);
+        this.teacherID = teacherID;
+        this.year = year;
     }
 
-    public Course(String name, int teacherID){
+    public Course(String name, int teacherID, int year){
         super(name);
         this.teacherID = teacherID;
+        this.year = year;
     }
 
     @Override
     public String toString() {
-        return "" + this.name + ", teacher is: " + this.teacherID + ", ID: " + this.getID();
+        return "" + this.name + "," +this.year+" year. Teacher: " + this.teacherID + ", ID: " + this.getID();
     }
 }

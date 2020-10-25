@@ -24,8 +24,8 @@ class TeacherDAO implements DAO<Teacher>{
         String getQuery = "SELECT * FROM teachers WHERE ID = ?";
         String getByNameQuery = "SELECT * FROM teachers WHERE name = ?";
         String getAllQuery = "SELECT * FROM teachers";
-        String createQuery = "INSERT INTO teachers (name, surname, courseID) VALUES (?,?,?)";
-        String updateQuery = "UPDATE teachers SET name = ?, surname = ?, courseid = ? where ID = ?";
+        String createQuery = "INSERT INTO teachers (name, surname) VALUES (?,?)";
+        String updateQuery = "UPDATE teachers SET name = ?, surname = ? where ID = ?";
         String deleteQuery = "DELETE FROM teachers WHERE ID = ?";
 
         try {
