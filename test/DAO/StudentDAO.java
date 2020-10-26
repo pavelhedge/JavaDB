@@ -1,15 +1,20 @@
-package Java.test;
+package test.DAO;
+
+import test.Main;
+import test.Student;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Java.test.DbObject.getConnection;
+import static test.DbObject.getConnection;
 
-class StudentDAO implements DAO<Student>{
+public class StudentDAO implements DAO<Student>{
 
     private ResultSet resultSet;
     private PreparedStatement getStmt;
@@ -22,7 +27,7 @@ class StudentDAO implements DAO<Student>{
     private PreparedStatement updateStmt;
     private PreparedStatement deleteStmt;
 
-    StudentDAO() {
+    public StudentDAO() {
         Connection connection = getConnection();
         String getQuery = "SELECT * FROM students WHERE ID = ?";
         String getByNameQuery = "SELECT * FROM students WHERE name = ?";
@@ -92,8 +97,8 @@ class StudentDAO implements DAO<Student>{
 
     public Student get(int ID) throws SQLException{
 
-            getStmt.setInt(1, ID);
-            resultSet = getStmt.executeQuery();
+        getStmt.setInt(1, ID);
+        resultSet = getStmt.executeQuery();
         if (resultSet.next()) {
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
@@ -120,7 +125,7 @@ class StudentDAO implements DAO<Student>{
     }
 
 
-    List<Student> getByCourse(int courseID)throws SQLException{
+    public List<Student> getByCourse(int courseID)throws SQLException{
         List<Student> list = new ArrayList<>();
         getByCourseStmt.setInt(1,courseID);
         resultSet = getByCourseStmt.executeQuery();
@@ -132,7 +137,7 @@ class StudentDAO implements DAO<Student>{
         }
         return list;
     }
-    List<Student> getByYear(int year) throws SQLException
+    public List<Student> getByYear(int year) throws SQLException
     {
         List<Student> list = new ArrayList<>();
         getByYearStmt.setInt(1, year);
@@ -146,7 +151,7 @@ class StudentDAO implements DAO<Student>{
         }
         return list;
     }
-    List<Student> getByTeacher(int teacherID) throws SQLException
+    public List<Student> getByTeacher(int teacherID) throws SQLException
     {
         List<Student> list = new ArrayList<>();
         getByTeacherStmt.setInt(1, teacherID);
@@ -175,16 +180,16 @@ class StudentDAO implements DAO<Student>{
         return list;
     }
     public void create(Student student) throws SQLException{
-        createStmt.setString(1,student.name);
-        createStmt.setString(2,student.surname);
-        createStmt.setInt(3, student.courseID);
+        createStmt.setString(1,student.getName());
+        createStmt.setString(2,student.getSurname());
+        createStmt.setInt(3, student.getCourseID());
         createStmt.executeUpdate();
     }
     public void update(int id, Student student) throws SQLException{
         updateStmt.setInt(4, id);
-        updateStmt.setString(1,student.name);
-        updateStmt.setString(2,student.surname);
-        updateStmt.setInt(3, student.courseID);
+        updateStmt.setString(1,student.getName());
+        updateStmt.setString(2,student.getSurname());
+        updateStmt.setInt(3, student.getCourseID());
         updateStmt.executeUpdate();
     }
     public void delete(int id) throws SQLException{
@@ -192,23 +197,4 @@ class StudentDAO implements DAO<Student>{
         deleteStmt.executeUpdate();
     }
 
-}
-
-public class Student extends DbPerson {
-    int courseID;
-
-    public Student(int id, String name, String surname, int courseID) {
-        super(id, name, surname);
-        this.courseID = courseID;
-    }
-
-    public Student(String name, String surname, int courseID){
-        super(name, surname);
-        this.courseID = courseID;
-    }
-
-    @Override
-    public String toString() {
-        return "" + this.name + " " + this.surname + ", ID: " + this.getID() + ", CourseID: " + this.courseID;
-    }
 }

@@ -1,8 +1,12 @@
-package Java.test;
+package test;
+
+import test.DAO.CourseDAO;
+import test.DAO.DAO;
+import test.DAO.StudentDAO;
+import test.DAO.TeacherDAO;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.List;
 

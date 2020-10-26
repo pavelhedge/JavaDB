@@ -1,6 +1,10 @@
-package Java.test;
+package test.tests;
+
 import org.testng.Assert;
 import org.testng.annotations.*;
+import test.DAO.CourseDAO;
+import test.DAO.StudentDAO;
+import test.Student;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -9,7 +13,7 @@ import java.util.List;
 public class StudentDAOTest {
 
     static StudentDAO testDao = new StudentDAO();
-    static Student testStudent = new Student("Testname", "TestSurname", 1);
+    static Student testStudent = new Student("TestName", "TestSurname", 1);
 
 
 
@@ -17,9 +21,9 @@ public class StudentDAOTest {
     public void testGet() {
         try {
             Student checkStudent = testDao.get(testStudent.getID());
-            Assert.assertEquals(testStudent.name, checkStudent.name);
-            Assert.assertEquals(testStudent.surname, checkStudent.surname);
-            Assert.assertEquals(testStudent.courseID, checkStudent.courseID);
+            Assert.assertEquals(testStudent.getName(), checkStudent.getName());
+            Assert.assertEquals(testStudent.getSurname(), checkStudent.getSurname());
+            Assert.assertEquals(testStudent.getCourseID(), checkStudent.getCourseID());
         }catch(SQLException e){e.printStackTrace();}
 
     }
@@ -27,11 +31,11 @@ public class StudentDAOTest {
     @Test(priority = 2)
     public void testGetByName() {
         try {
-            Student checkStudent = testDao.getByName(testStudent.name);
+            Student checkStudent = testDao.getByName(testStudent.getName());
             testStudent.setID(checkStudent.getID());
-            Assert.assertEquals(testStudent.name, checkStudent.name);
-            Assert.assertEquals(testStudent.surname, checkStudent.surname);
-            Assert.assertEquals(testStudent.courseID, checkStudent.courseID);
+            Assert.assertEquals(testStudent.getName(), checkStudent.getName());
+            Assert.assertEquals(testStudent.getSurname(), checkStudent.getSurname());
+            Assert.assertEquals(testStudent.getCourseID(), checkStudent.getCourseID());
         }catch(SQLException e){e.printStackTrace();}
     }
 
@@ -39,9 +43,10 @@ public class StudentDAOTest {
     public void testGetByCourse() {
         try {
             boolean check = false;
-            List<Student> list =  testDao.getByCourse(testStudent.courseID);
+            List<Student> list =  testDao.getByCourse(testStudent.getCourseID());
             for(Student st : list){
-                if(st.name.equals(testStudent.name) && st.surname.equals(testStudent.surname) && st.courseID == testStudent.courseID){
+                if(st.getName().equals(testStudent.getName()) && st.getName().equals(testStudent.getName()) &&
+                        st.getCourseID() == testStudent.getCourseID()){
                     check = true;
                 }
             }
@@ -53,10 +58,11 @@ public class StudentDAOTest {
     public void testGetByYear() {
         try {
             boolean check = false;
-            int year = new CourseDAO().get(testStudent.courseID).year;
+            int year = new CourseDAO().get(testStudent.getCourseID()).getYear();
             List<Student> list =  testDao.getByYear(year);
             for(Student st : list){
-                if(st.name.equals(testStudent.name) && st.surname.equals(testStudent.surname) && st.courseID == testStudent.courseID){
+                if(st.getName().equals(testStudent.getName()) && st.getSurname().equals(testStudent.getSurname()) &&
+                        st.getCourseID() == testStudent.getCourseID()){
                     check = true;
                 }
             }
@@ -69,11 +75,12 @@ public class StudentDAOTest {
         try {
             boolean check = false;
 
-            int teacherID = new CourseDAO().get(testStudent.courseID).teacherID;
+            int teacherID = new CourseDAO().get(testStudent.getCourseID()).getTeacherID();
 
             List<Student> list =  testDao.getByTeacher(teacherID);
             for(Student st : list){
-                if(st.name.equals(testStudent.name) && st.surname.equals(testStudent.surname) && st.courseID == testStudent.courseID){
+                if(st.getName().equals(testStudent.getName()) && st.getSurname().equals(testStudent.getSurname()) &&
+                        st.getCourseID() == testStudent.getCourseID()){
                     check = true;
                 }
             }
@@ -87,7 +94,8 @@ public class StudentDAOTest {
             boolean check = false;
             List<Student> list =  testDao.getAll();
             for(Student st : list){
-                if(st.name.equals(testStudent.name) && st.surname.equals(testStudent.surname) && st.courseID == testStudent.courseID){
+                if(st.getName().equals(testStudent.getName()) && st.getSurname().equals(testStudent.getSurname()) &&
+                        st.getCourseID() == testStudent.getCourseID()){
                     check = true;
                 }
             }
@@ -99,18 +107,22 @@ public class StudentDAOTest {
     public void testCreate() {
         try {
             testDao.create(testStudent);
+            Student checkStudent = testDao.getByName(testStudent.getName());
+            Assert.assertEquals(testStudent.getName(), checkStudent.getName());
+            Assert.assertEquals(testStudent.getSurname(), checkStudent.getSurname());
+            Assert.assertEquals(testStudent.getCourseID(), checkStudent.getCourseID());
         }catch (SQLException e){e.printStackTrace();}
     }
 
     @Test(priority = 4)
     public void testUpdate() {
         try {
-            testStudent.name = "updateName";
-            testDao.update(testStudent.getID(), testStudent);
+            Student updateStudent = new Student (testStudent.getName(), "updateSurname", testStudent.getCourseID());
+            testDao.update(testStudent.getID(), updateStudent);
             Student checkStudent = testDao.get(testStudent.getID());
-            Assert.assertEquals(testStudent.name, checkStudent.name);
-            Assert.assertEquals(testStudent.surname, checkStudent.surname);
-            Assert.assertEquals(testStudent.courseID, checkStudent.courseID);
+            Assert.assertEquals(updateStudent.getName(), checkStudent.getName());
+            Assert.assertEquals(updateStudent.getSurname(), checkStudent.getSurname());
+            Assert.assertEquals(updateStudent.getCourseID(), checkStudent.getCourseID());
         }catch(SQLException e){e.printStackTrace();}
     }
 

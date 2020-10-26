@@ -1,15 +1,17 @@
-package Java.test;
+package test.DAO;
+
+import test.Course;
+import test.Main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Java.test.DbObject.getConnection;
+import static test.DbObject.getConnection;
 
-class CourseDAO implements DAO<Course>{
+public class CourseDAO implements DAO<Course> {
 
     private ResultSet resultSet;
     private PreparedStatement getStmt;
@@ -21,7 +23,7 @@ class CourseDAO implements DAO<Course>{
     private PreparedStatement updateStmt;
     private PreparedStatement deleteStmt;
 
-    CourseDAO() {
+    public CourseDAO() {
         Connection connection = getConnection();
         String getQuery = "SELECT * FROM courses WHERE ID = ?";
         String getByNameQuery = "SELECT * FROM courses WHERE name = ?";
@@ -72,14 +74,14 @@ class CourseDAO implements DAO<Course>{
                 int teacherID = Integer.parseInt(reader.readLine());
                 System.out.println("Enter year");
                 int year = Integer.parseInt(reader.readLine());
-               reader.close();
+                reader.close();
                 return new Course(name, teacherID, year);
             } catch (NumberFormatException e) {
                 System.out.println("Wrong input. Try again?");
                 try {
                     String input =reader.readLine();
                     if (input.length() == 0 || input.charAt(0) != 'y') {
-                       reader.close();
+                        reader.close();
                         return null;
                     }
                 } catch (IOException i) {
@@ -118,7 +120,7 @@ class CourseDAO implements DAO<Course>{
         else return null;
     }
 
-    List<Course> getByYear(int year) throws SQLException
+    public List<Course> getByYear(int year) throws SQLException
     {
         List<Course> list = new ArrayList<>();
         getByYearStmt.setInt(1, year);
@@ -131,7 +133,7 @@ class CourseDAO implements DAO<Course>{
         }
         return list;
     }
-    List<Course> getByTeacher(int teacherID) throws SQLException
+    public List<Course> getByTeacher(int teacherID) throws SQLException
     {
         List<Course> list = new ArrayList<>();
         getByTeacherStmt.setInt(1, teacherID);
@@ -159,16 +161,16 @@ class CourseDAO implements DAO<Course>{
         return list;
     }
     public void create(Course course) throws SQLException{
-        createStmt.setString(1,course.name);
-        createStmt.setInt(2, course.teacherID);
-        createStmt.setInt(3, course.year);
+        createStmt.setString(1,course.getName());
+        createStmt.setInt(2, course.getTeacherID());
+        createStmt.setInt(3, course.getYear());
         createStmt.executeUpdate();
     }
     public void update(int id, Course course) throws SQLException{
         updateStmt.setInt(4, id);
-        updateStmt.setString(1,course.name);
-        updateStmt.setInt(2, course.teacherID);
-        createStmt.setInt(3, course.year);
+        updateStmt.setString(1,course.getName());
+        updateStmt.setInt(2, course.getTeacherID());
+        createStmt.setInt(3, course.getYear());
 
         updateStmt.executeUpdate();
     }
@@ -179,25 +181,3 @@ class CourseDAO implements DAO<Course>{
 
 }
 
-
-public class Course extends DbObject {
-    int teacherID;
-    int year;
-
-    public Course(int id, String name, int teacherID, int year) {
-        super(id, name);
-        this.teacherID = teacherID;
-        this.year = year;
-    }
-
-    public Course(String name, int teacherID, int year){
-        super(name);
-        this.teacherID = teacherID;
-        this.year = year;
-    }
-
-    @Override
-    public String toString() {
-        return "" + this.name + "," +this.year+" year. Teacher: " + this.teacherID + ", ID: " + this.getID();
-    }
-}

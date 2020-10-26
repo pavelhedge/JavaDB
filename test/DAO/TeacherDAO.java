@@ -1,15 +1,21 @@
-package Java.test;
+package test.DAO;
+
+import test.Main;
+import test.Teacher;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Java.test.DbObject.getConnection;
+import static test.DbObject.getConnection;
 
-class TeacherDAO implements DAO<Teacher>{
+
+public class TeacherDAO implements DAO<Teacher>{
 
     private ResultSet resultSet;
     private PreparedStatement getStmt;
@@ -19,7 +25,7 @@ class TeacherDAO implements DAO<Teacher>{
     private PreparedStatement updateStmt;
     private PreparedStatement deleteStmt;
 
-    TeacherDAO() {
+    public TeacherDAO() {
         Connection connection = getConnection();
         String getQuery = "SELECT * FROM teachers WHERE ID = ?";
         String getByNameQuery = "SELECT * FROM teachers WHERE name = ?";
@@ -119,14 +125,14 @@ class TeacherDAO implements DAO<Teacher>{
         return list;
     }
     public void create(Teacher teacher) throws SQLException{
-        createStmt.setString(1,teacher.name);
-        createStmt.setString(2,teacher.surname);
+        createStmt.setString(1,teacher.getName());
+        createStmt.setString(2,teacher.getSurname());
         createStmt.executeUpdate();
     }
     public void update(int id, Teacher teacher) throws SQLException{
         updateStmt.setInt(3, id);
-        updateStmt.setString(1,teacher.name);
-        updateStmt.setString(2,teacher.surname);
+        updateStmt.setString(1,teacher.getName());
+        updateStmt.setString(2,teacher.getSurname());
         updateStmt.executeUpdate();
     }
     public void delete(int id) throws SQLException{
@@ -134,21 +140,4 @@ class TeacherDAO implements DAO<Teacher>{
         deleteStmt.executeUpdate();
     }
 
-}
-
-
-public class Teacher extends DbPerson {
-
-    public Teacher(int id, String name, String surname) {
-        super(id, name, surname);
-    }
-
-    public Teacher(String name, String surname){
-        super(name, surname);
-    }
-
-    @Override
-    public String toString() {
-        return "" + this.name + " " + this.surname + ", ID: " + this.getID();
-    }
 }

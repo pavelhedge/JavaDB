@@ -1,10 +1,7 @@
-package Java.test;
+package test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.sql.*;
-import java.util.List;
-import java.util.Scanner;
 
 /*
 Проект содержит три базы данных - студентов, курсы, преподавателей.
@@ -33,5 +30,6 @@ public class Main {
         Menu menu = new Menu();
         menu.menu();
     }
+
 
 }

@@ -1,6 +1,9 @@
-package Java.test;
+package test.tests;
+
 import org.testng.Assert;
 import org.testng.annotations.*;
+import test.DAO.TeacherDAO;
+import test.Teacher;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.List;
 public class TeacherDAOTest {
 
     static TeacherDAO testDao = new TeacherDAO();
-    static Teacher testTeacher = new Teacher("Testname", "TestSurname");
+    static Teacher testTeacher = new Teacher("TestName", "TestSurname");
 
 
 
@@ -17,8 +20,8 @@ public class TeacherDAOTest {
     public void testGet() {
         try {
             Teacher checkTeacher = testDao.get(testTeacher.getID());
-            Assert.assertEquals(testTeacher.name, checkTeacher.name);
-            Assert.assertEquals(testTeacher.surname, checkTeacher.surname);
+            Assert.assertEquals(testTeacher.getName(), checkTeacher.getName());
+            Assert.assertEquals(testTeacher.getSurname(), checkTeacher.getSurname());
         }catch(SQLException e){e.printStackTrace();}
 
     }
@@ -26,10 +29,10 @@ public class TeacherDAOTest {
     @Test(priority = 2)
     public void testGetByName() {
         try {
-            Teacher checkTeacher = testDao.getByName(testTeacher.name);
+            Teacher checkTeacher = testDao.getByName(testTeacher.getName());
             testTeacher.setID(checkTeacher.getID());
-            Assert.assertEquals(testTeacher.name, checkTeacher.name);
-            Assert.assertEquals(testTeacher.surname, checkTeacher.surname);
+            Assert.assertEquals(testTeacher.getName(), checkTeacher.getName());
+            Assert.assertEquals(testTeacher.getSurname(), checkTeacher.getSurname());
         }catch(SQLException e){e.printStackTrace();}
     }
 
@@ -38,8 +41,9 @@ public class TeacherDAOTest {
         try {
             boolean check = false;
             List<Teacher> list =  testDao.getAll();
-            for(Teacher st : list){
-                if(st.name.equals(testTeacher.name) && st.surname.equals(testTeacher.surname)){
+            for(Teacher teacher : list){
+                if(teacher.getName().equals(testTeacher.getName()) &&
+                        teacher.getSurname().equals(testTeacher.getSurname())){
                     check = true;
                 }
             }
@@ -51,17 +55,20 @@ public class TeacherDAOTest {
     public void testCreate() {
         try {
             testDao.create(testTeacher);
+            Teacher checkTeacher = testDao.getByName(testTeacher.getName());
+            Assert.assertEquals(testTeacher.getName(), checkTeacher.getName());
+            Assert.assertEquals(testTeacher.getSurname(), checkTeacher.getSurname());
         }catch (SQLException e){e.printStackTrace();}
     }
 
     @Test(priority = 4)
     public void testUpdate() {
         try {
-            testTeacher.name = "updateName";
-            testDao.update(testTeacher.getID(), testTeacher);
+            Teacher updateTeacher = new Teacher(testTeacher.getName(), "updateSurname");
+            testDao.update(testTeacher.getID(), updateTeacher);
             Teacher checkTeacher = testDao.get(testTeacher.getID());
-            Assert.assertEquals(testTeacher.name, checkTeacher.name);
-            Assert.assertEquals(testTeacher.surname, checkTeacher.surname);
+            Assert.assertEquals(updateTeacher.getName(), checkTeacher.getName());
+            Assert.assertEquals(updateTeacher.getSurname(), checkTeacher.getSurname());
         }catch(SQLException e){e.printStackTrace();}
     }
 
