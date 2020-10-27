@@ -1,6 +1,7 @@
-package test.DAO;
+package src.main.java.DAO;
 
-import test.DbObject;
+
+import src.main.java.DbObject;
 
 import java.io.IOException;
 import java.sql.*;

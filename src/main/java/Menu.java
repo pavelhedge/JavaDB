@@ -1,9 +1,4 @@
-package test;
-
-import test.DAO.CourseDAO;
-import test.DAO.DAO;
-import test.DAO.StudentDAO;
-import test.DAO.TeacherDAO;
+package src.main.java;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,15 +8,15 @@ import java.util.List;
 
 public class Menu {
 
-    DAO menuDAO;
-    StudentDAO sdao;
-    TeacherDAO tdao;
-    CourseDAO cdao;
+    DbPerson.DAO menuDAO;
+    DbPerson.StudentDAO sdao;
+    DbPerson.TeacherDAO tdao;
+    DbPerson.CourseDAO cdao;
     BufferedReader reader;
     Menu(){
-        sdao = new StudentDAO();
-        tdao = new TeacherDAO();
-        cdao = new CourseDAO();
+        sdao = new DbPerson.StudentDAO();
+        tdao = new DbPerson.TeacherDAO();
+        cdao = new DbPerson.CourseDAO();
         reader = Main.getReader();
 
     }

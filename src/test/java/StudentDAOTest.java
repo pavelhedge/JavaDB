@@ -1,10 +1,9 @@
-package test.tests;
+package src.test.java;
 
 import org.testng.Assert;
 import org.testng.annotations.*;
-import test.DAO.CourseDAO;
-import test.DAO.StudentDAO;
-import test.Student;
+import src.main.java.DbPerson;
+import src.main.java.Student;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class StudentDAOTest {
 
-    static StudentDAO testDao = new StudentDAO();
+    static DbPerson.StudentDAO testDao = new DbPerson.StudentDAO();
     static Student testStudent = new Student("TestName", "TestSurname", 1);
 
 
@@ -58,7 +57,7 @@ public class StudentDAOTest {
     public void testGetByYear() {
         try {
             boolean check = false;
-            int year = new CourseDAO().get(testStudent.getCourseID()).getYear();
+            int year = new DbPerson.CourseDAO().get(testStudent.getCourseID()).getYear();
             List<Student> list =  testDao.getByYear(year);
             for(Student st : list){
                 if(st.getName().equals(testStudent.getName()) && st.getSurname().equals(testStudent.getSurname()) &&
@@ -75,7 +74,7 @@ public class StudentDAOTest {
         try {
             boolean check = false;
 
-            int teacherID = new CourseDAO().get(testStudent.getCourseID()).getTeacherID();
+            int teacherID = new DbPerson.CourseDAO().get(testStudent.getCourseID()).getTeacherID();
 
             List<Student> list =  testDao.getByTeacher(teacherID);
             for(Student st : list){

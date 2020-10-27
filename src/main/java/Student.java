@@ -1,4 +1,4 @@
-package test;
+package src.main.java;
 
 public class Student extends DbPerson {
 

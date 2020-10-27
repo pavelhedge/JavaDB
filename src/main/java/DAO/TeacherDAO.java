@@ -1,7 +1,9 @@
-package test.DAO;
+package src.main.java.DAO;
 
-import test.Main;
-import test.Teacher;
+import src.main.java.Teacher;
+import src.main.java.DbObject;
+
+import static src.main.java.Main.getReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static test.DbObject.getConnection;
 
 
 public class TeacherDAO implements DAO<Teacher>{
@@ -26,7 +27,7 @@ public class TeacherDAO implements DAO<Teacher>{
     private PreparedStatement deleteStmt;
 
     public TeacherDAO() {
-        Connection connection = getConnection();
+        Connection connection = DbObject.getConnection();
         String getQuery = "SELECT * FROM teachers WHERE ID = ?";
         String getByNameQuery = "SELECT * FROM teachers WHERE name = ?";
         String getAllQuery = "SELECT * FROM teachers";
@@ -59,7 +60,7 @@ public class TeacherDAO implements DAO<Teacher>{
     }
 
     public Teacher form() {
-        BufferedReader reader = Main.getReader();
+        BufferedReader reader = getReader();
         while (true) {
             try {
                 System.out.println("Enter name");

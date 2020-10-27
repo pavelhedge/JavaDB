@@ -1,7 +1,9 @@
-package test.DAO;
+package src.main.java.DAO;
 
-import test.Course;
-import test.Main;
+import src.main.java.Course;
+import src.main.java.DbObject;
+
+import static src.main.java.Main.getReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static test.DbObject.getConnection;
+
 
 public class CourseDAO implements DAO<Course> {
 
@@ -24,7 +26,7 @@ public class CourseDAO implements DAO<Course> {
     private PreparedStatement deleteStmt;
 
     public CourseDAO() {
-        Connection connection = getConnection();
+        Connection connection = DbObject.getConnection();
         String getQuery = "SELECT * FROM courses WHERE ID = ?";
         String getByNameQuery = "SELECT * FROM courses WHERE name = ?";
         String getByYearQuery = "SELECT * FROM courses WHERE year = ?";
@@ -65,7 +67,7 @@ public class CourseDAO implements DAO<Course> {
     public Course form() {
 
         while (true) {
-            BufferedReader reader = Main.getReader();
+            BufferedReader reader = getReader();
             try {
                 System.out.println("Enter name");
                 String name =reader.readLine();

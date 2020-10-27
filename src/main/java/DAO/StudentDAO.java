@@ -1,7 +1,9 @@
-package test.DAO;
+package src.main.java.DAO;
 
-import test.Main;
-import test.Student;
+import src.main.java.Student;
+import src.main.java.DbObject;
+
+import static src.main.java.Main.getReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static test.DbObject.getConnection;
 
 public class StudentDAO implements DAO<Student>{
 
@@ -28,7 +29,7 @@ public class StudentDAO implements DAO<Student>{
     private PreparedStatement deleteStmt;
 
     public StudentDAO() {
-        Connection connection = getConnection();
+        Connection connection = DbObject.getConnection();
         String getQuery = "SELECT * FROM students WHERE ID = ?";
         String getByNameQuery = "SELECT * FROM students WHERE name = ?";
         String getByCourseQuery = "SELECT * FROM students WHERE courseID = ?";
@@ -72,7 +73,7 @@ public class StudentDAO implements DAO<Student>{
     public Student form(){
         while(true){
             try {
-                BufferedReader reader = Main.getReader();
+                BufferedReader reader = getReader();
                 System.out.println("Enter name");
                 String name = reader.readLine();
                 if (name.equals("")) throw new NumberFormatException();
@@ -85,7 +86,7 @@ public class StudentDAO implements DAO<Student>{
             }catch(NumberFormatException e) {
                 System.out.println("Wrong input. Try again?");
                 try {
-                    String input = Main.getReader().readLine();
+                    String input = getReader().readLine();
                     if (input.length() == 0 || input.charAt(0) != 'y')
                     {
                         return null;

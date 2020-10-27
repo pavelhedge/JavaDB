@@ -1,9 +1,9 @@
-package test.tests;
+package src.test.java;
 
 import org.testng.Assert;
 import org.testng.annotations.*;
-import test.DAO.TeacherDAO;
-import test.Teacher;
+import src.main.java.DbPerson;
+import src.main.java.Teacher;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TeacherDAOTest {
 
-    static TeacherDAO testDao = new TeacherDAO();
+    static DbPerson.TeacherDAO testDao = new DbPerson.TeacherDAO();
     static Teacher testTeacher = new Teacher("TestName", "TestSurname");
 
 

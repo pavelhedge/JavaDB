@@ -1,4 +1,4 @@
-package test;
+package src.main.java;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +8,7 @@ public abstract class DbObject {
 
     static Connection connection;
 
-    private static final String url = "jdbc:mysql://127.0.0.1:5778/test";
+    private static final String url = "jdbc:mysql://127.0.0.1:5778/src";
     private static final String user = "root";
     private static final String password = "12345";
 
